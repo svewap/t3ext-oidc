@@ -67,6 +67,6 @@ final class OidcConfiguration
         $this->usersDefaultGroup = $extConfig['usersDefaultGroup'];
         $this->oidcRedirectUri = $extConfig['oidcRedirectUri'];
         $this->revokeAccessTokenAfterLogin = (bool)$extConfig['oidcRevokeAccessTokenAfterLogin'];
-        $this->enablePasswordCredentials = (bool)$extConfig['enablePasswordCredentials'];
+        $this->enablePasswordCredentials = (bool)($extConfig['enablePasswordCredentials'] ?? false);
     }
 }
