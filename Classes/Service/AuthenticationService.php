@@ -481,7 +481,7 @@ class AuthenticationService extends \TYPO3\CMS\Core\Authentication\Authenticatio
                 $userTable,
                 $data
             );
-            $userUid = $tableConnection->lastInsertId();
+            $userUid = $tableConnection->lastInsertId($userTable);
             // Retrieve the created user from database to get all columns
             $user = $this->getUserByUidAndTable((int)$userUid, $userTable);
         }
