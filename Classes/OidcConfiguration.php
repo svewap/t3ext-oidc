@@ -30,6 +30,7 @@ final class OidcConfiguration
     public string $oidcClientKey = '';
     public string $oidcClientSecret = '';
     public string $oidcClientScopes = 'openid';
+    public string $oidcClientScopeSeparator = ' ';
     public string $oidcRedirectUri = '';
     public string $endpointAuthorize = '';
     public string $endpointToken = '';
@@ -39,9 +40,9 @@ final class OidcConfiguration
     public bool $revokeAccessTokenAfterLogin = false;
     public bool $enablePasswordCredentials = false;
 
-    public function __construct()
+    public function __construct(array $extConfig = [])
     {
-        $extConfig = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('oidc') ?? [];
+        $extConfig = $extConfig ?: $this->getExtensionConfiguration();
 
         $this->enableFrontendAuthentication = (bool)$extConfig['enableFrontendAuthentication'];
         $this->authenticationServicePriority = (int)$extConfig['authenticationServicePriority'];
@@ -58,6 +59,7 @@ final class OidcConfiguration
         $this->oidcClientKey = $extConfig['oidcClientKey'];
         $this->oidcClientSecret = $extConfig['oidcClientSecret'];
         $this->oidcClientScopes = $extConfig['oidcClientScopes'];
+        $this->oidcClientScopeSeparator = $extConfig['oidcClientScopeSeparator'] === '' ? ' ' : $extConfig['oidcClientScopeSeparator'];
         $this->endpointAuthorize = $extConfig['oidcEndpointAuthorize'];
         $this->endpointToken = $extConfig['oidcEndpointToken'];
         $this->endpointUserInfo = $extConfig['oidcEndpointUserInfo'];
@@ -68,5 +70,14 @@ final class OidcConfiguration
         $this->oidcRedirectUri = $extConfig['oidcRedirectUri'];
         $this->revokeAccessTokenAfterLogin = (bool)$extConfig['oidcRevokeAccessTokenAfterLogin'];
         $this->enablePasswordCredentials = (bool)($extConfig['enablePasswordCredentials'] ?? false);
+    }
+
+    protected function getExtensionConfiguration(): array
+    {
+        $config = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('oidc');
+        if ($config) {
+            return $config;
+        }
+        throw new \UnexpectedValueException('OIDC extension configuration not found', 1763986824);
     }
 }
