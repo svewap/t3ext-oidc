@@ -52,14 +52,14 @@ final class OidcConfiguration
         $this->frontendUserMustExistLocally = (bool)$extConfig['frontendUserMustExistLocally'];
         $this->disableCSRFProtection = (bool)$extConfig['oidcDisableCSRFProtection'];
         $this->enableCodeVerifier = (bool)$extConfig['enableCodeVerifier'];
-        $this->authenticationUrlRoute = $extConfig['authenticationUrlRoute'];
+        $this->authenticationUrlRoute = $extConfig['authenticationUrlRoute'] ?? $this->authenticationUrlRoute;
         $this->authorizeLanguageParameter = $extConfig['oidcAuthorizeLanguageParameter'];
         $this->useRequestPathAuthentication = (bool)$extConfig['oidcUseRequestPathAuthentication'];
         $this->oauthProviderFactory = $extConfig['oauthProviderFactory'] ?: GenericOAuthProviderFactory::class;
         $this->oidcClientKey = $extConfig['oidcClientKey'];
         $this->oidcClientSecret = $extConfig['oidcClientSecret'];
         $this->oidcClientScopes = $extConfig['oidcClientScopes'];
-        $this->oidcClientScopeSeparator = $extConfig['oidcClientScopeSeparator'] === '' ? ' ' : $extConfig['oidcClientScopeSeparator'];
+        $this->oidcClientScopeSeparator = ($extConfig['oidcClientScopeSeparator'] ?? '') === '' ? ' ' : $extConfig['oidcClientScopeSeparator'];
         $this->endpointAuthorize = $extConfig['oidcEndpointAuthorize'];
         $this->endpointToken = $extConfig['oidcEndpointToken'];
         $this->endpointUserInfo = $extConfig['oidcEndpointUserInfo'];
@@ -69,7 +69,7 @@ final class OidcConfiguration
         $this->usersDefaultGroup = $extConfig['usersDefaultGroup'];
         $this->oidcRedirectUri = $extConfig['oidcRedirectUri'];
         $this->revokeAccessTokenAfterLogin = (bool)$extConfig['oidcRevokeAccessTokenAfterLogin'];
-        $this->enablePasswordCredentials = (bool)$extConfig['enablePasswordCredentials'];
+        $this->enablePasswordCredentials = (bool)($extConfig['enablePasswordCredentials'] ?? $this->enablePasswordCredentials);
     }
 
     protected function getExtensionConfiguration(): array
